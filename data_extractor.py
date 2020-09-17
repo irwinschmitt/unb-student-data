@@ -1,4 +1,3 @@
-from PyPDF2 import pdf
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
@@ -7,6 +6,7 @@ import io
 import camelot
 import re
 import sys
+import json
 
 
 def acceptable_file(file_name):
@@ -36,7 +36,6 @@ def extract_text(pdf_path):
 
 
 def get_info(text):
-    print(text)
     return {
         "nome": re.search("(?<=Nome:)(.*)(?=Curso:)", text).group(),
         "matricula": re.search("(?<=Matrícula:)(.*)(?=Vínculo:)", text).group(),
@@ -81,6 +80,6 @@ if __name__ == '__main__':
         }
         data["componentes"].append(componente)
 
-    # print(data)
+    with open(sys.argv[1].split(".")[0] + ".json", "w") as fp:
+        json.dump(data, fp)
 
-    # info = convert_to_json(title, table)
